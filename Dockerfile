@@ -48,6 +48,7 @@ RUN GPG_KEYS=B0F4253373F8F6F510D42178520A9993A1C052F8 \
     --with-file-aio \
     --with-http_v2_module \
     --with-ipv6 \
+    --add-module=/usr/src/ngx_upstream_jdomain \
   " \
   && addgroup -S nginx \
   && adduser -D -S -h /var/cache/nginx -s /sbin/nologin -G nginx nginx \
@@ -75,6 +76,7 @@ RUN GPG_KEYS=B0F4253373F8F6F510D42178520A9993A1C052F8 \
   && mkdir -p /usr/src \
   && tar -zxC /usr/src -f nginx.tar.gz \
   && rm nginx.tar.gz \
+  && git clone git://github.com/arobson/ngx_upstream_jdomain /usr/src/ngx_upstream_jdomain \
   && cd /usr/src/nginx-$NGINX_VERSION \
   && ./configure $CONFIG --with-debug \
   && make -j$(getconf _NPROCESSORS_ONLN) \
@@ -119,11 +121,8 @@ RUN GPG_KEYS=B0F4253373F8F6F510D42178520A9993A1C052F8 \
   )" \
   && apk add --no-cache --virtual .nginx-rundeps $runDeps
 
-  # *** ADD CUSTOM MODULE HERE ***
-  RUN cd /usr/src \
-      git clone git://github.com/arobson/ngx_upstream_jdomain \
-      cd /usr/src/ngx_upstream_jdomain \
-      ./configure --add-module=/usr/src/ngx_upstream_jdomain \
+  # *** BUILD CUSTOM MODULE HERE ***
+  RUN cd /usr/src/ngx_upstream_jdomain \
       make \
       make install
 
