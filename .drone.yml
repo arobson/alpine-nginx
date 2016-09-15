@@ -1,0 +1,13 @@
+pipeline:
+  docker:
+    image: plugins/docker
+    debug: true
+    username: ${DOCKER_USERNAME}
+    password: ${DOCKER_PASSWORD}
+    email: ${DOCKER_EMAIL}
+    repo: arobson/alpine-nginx
+    tags:
+      - latest
+      - "1.11.3"
+    when:
+      branch: master
