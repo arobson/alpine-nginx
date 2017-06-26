@@ -1,16 +1,16 @@
 ## alpine-nginx
-[![Build Status](https://drone.twasforetold.com/api/badges/arobson/alpine-nginx/status.svg)](https://drone.twasforetold.com/arobson/alpine-nginx)
+[![Build Status][travis-image]][travis-url]
 
 Extends the official NGiNX image with a custom build of [ngx_upstream_jdomain](https://github.com/wdaike/ngx_upstream_jdomain) from [my fork](https://github.com/arobson/ngx_upstream_jdomain).
 
 ### Motivation
-We currently use NGiNX between AWS's ELB and our microservices for:
+Use NGiNX between AWS's ELB and kubernetes hosted services for:
  * SSL termination
  * static resource caching
  * compression
  * other stuff NGiNX is good at ...
 
-Instead of producing static config files that map service IPs to upstream blocks, we use kubernetes service names. In kubernetes, services are registered with skyDNS. Multiple Pod IPs can be assigned and these assignments can change over time. NGiNX only resolves these DNS names at start-up. 
+Instead of producing static config files that map service IPs to upstream blocks, use kubernetes service names. In kubernetes, services are registered with skyDNS. Multiple Pod IPs can be assigned and these assignments can change over time. NGiNX only resolves these DNS names at start-up. 
 
 By adding this module to NGiNX, incoming traffic from an ELB -> NGiNX -> Service should continue to resolve to the correct service IPs over time even as they change without having to regenerate configuration files or restart the NGiNX container(s).
 
@@ -66,3 +66,6 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
 ### Other Contributions
 
 Thanks to [Oliver Poitrey's](https://github.com/rs) for his PRs/improvements to this module.
+
+[travis-url]: https://travis-ci.org/arobson/alpine-nginx
+[travis-image]: https://travis-ci.org/arobson/alpine-nginx.svg?branch=master
